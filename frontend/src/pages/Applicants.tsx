@@ -1,18 +1,13 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import { 
   Plus, 
   Search, 
-  Filter, 
   Eye, 
   ChevronLeft, 
   ChevronRight,
-  MoreVertical,
-  CheckCircle2,
-  Clock,
-  AlertCircle,
-  XCircle
+  CheckCircle2
 } from 'lucide-react';
 import apiClient from '../api/axios';
 

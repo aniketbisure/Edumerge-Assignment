@@ -8,12 +8,11 @@ import {
   CreditCard, 
   FileCheck, 
   Lock, 
-  MoreVertical,
+  Lock, 
   ShieldCheck,
   AlertCircle,
   Loader2,
   Trash2,
-  Calendar,
   XCircle
 } from 'lucide-react';
 import apiClient from '../api/axios';

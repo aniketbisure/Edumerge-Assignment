@@ -1,10 +1,7 @@
-import React from 'react';
 import { Outlet, NavLink, Link, useNavigate } from 'react-router-dom';
 import { 
-  BarChart, 
   Users, 
   Settings, 
-  FolderPlus, 
   LogOut, 
   LayoutDashboard, 
   Briefcase 

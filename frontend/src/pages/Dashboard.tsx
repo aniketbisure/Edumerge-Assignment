@@ -1,4 +1,3 @@
-import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { 
   BarChart, 
@@ -17,12 +16,10 @@ import {
   Users, 
   CheckCircle, 
   Clock, 
-  AlertCircle,
-  TrendingUp,
-  CreditCard,
-  Loader2,
-  FileText,
-  Eye
+  CreditCard, 
+  Loader2, 
+  FileText, 
+  Eye 
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import apiClient from '../api/axios';
@@ -201,7 +198,7 @@ const Dashboard = () => {
                   dataKey="value"
                   stroke="none"
                 >
-                  {statusData.map((entry, index) => (
+                  {statusData.map((_entry, index) => (
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                   ))}
                 </Pie>
