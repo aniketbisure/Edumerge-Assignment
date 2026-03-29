@@ -5,12 +5,31 @@ import cors from 'cors';
 import morgan from 'morgan';
 import mongoSanitize from 'express-mongo-sanitize';
 import connectDB from './config/db';
+import User from './models/User';
 import errorHandler from './middleware/errorHandler';
 import { generalLimiter } from './middleware/rateLimiter';
 import logger from './utils/logger';
+import { runSeed } from './config/db_seed';
+
+// Route Imports
+import authRoutes from './routes/auth';
+import masterRoutes from './routes/masters';
+import applicantRoutes from './routes/applicants';
+import dashboardRoutes from './routes/dashboard';
 
 // Connect to Database
-connectDB();
+connectDB().then(async () => {
+  // Auto-seed for Render Free Tier (if database is empty)
+  try {
+    const userCount = await User.countDocuments();
+    if (userCount === 0) {
+      logger.info('Database empty, performing auto-seed...');
+      await runSeed();
+    }
+  } catch (error: any) {
+    logger.error(`Auto-seed check failed: ${error.message}`);
+  }
+});
 
 const app = express();
 
@@ -58,19 +77,15 @@ app.get('/api/health', (req: Request, res: Response) => {
 });
 
 // Auth Routes
-import authRoutes from './routes/auth';
 app.use('/api/auth', authRoutes);
 
 // Master Setup Routes
-import masterRoutes from './routes/masters';
 app.use('/api/masters', masterRoutes);
 
 // Applicant Management Routes
-import applicantRoutes from './routes/applicants';
 app.use('/api/applicants', applicantRoutes);
 
 // Dashboard Routes
-import dashboardRoutes from './routes/dashboard';
 app.use('/api/dashboard', dashboardRoutes);
 
 // Error Handling
