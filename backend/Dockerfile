@@ -14,7 +14,7 @@ RUN npm install
 COPY . .
 
 # Build the application (compiles TS to JS)
-RUN npm run build
+RUN npx tsc
 
 # Expose the port the app runs on
 EXPOSE 5000
