@@ -7,14 +7,17 @@ WORKDIR /app
 # Copy package.json and package-lock.json
 COPY package*.json ./
 
-# Install production dependencies
-RUN npm install --only=production
+# Install ALL dependencies (including typescript) for building
+RUN npm install
 
 # Copy the rest of the application code
 COPY . .
 
-# Expone the port the app runs on
+# Build the application (compiles TS to JS)
+RUN npm run build
+
+# Expose the port the app runs on
 EXPOSE 5000
 
-# Start command
-CMD ["node", "server.js"]
+# Start command (runs from the compiled dist folder)
+CMD ["node", "dist/server.js"]
