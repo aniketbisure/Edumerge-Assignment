@@ -1,0 +1,1 @@
+{"version":3,"file":"rbac.d.ts","sourceRoot":"","sources":["../../src/middleware/rbac.ts"],"names":[],"mappings":"AAEA;;GAEG;AACH,QAAA,MAAM,SAAS,GAAI,GAAG,OAAO,MAAM,EAAE,MAC3B,KAAK,GAAG,EAAE,KAAK,GAAG,EAAE,MAAM,GAAG,QAWtC,CAAC;AAEF,eAAe,SAAS,CAAC"}

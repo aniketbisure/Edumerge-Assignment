@@ -1,0 +1,51 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    services:
+      mongodb:
+        image: mongo:latest
+        ports:
+          - 27017:27017
+      redis:
+        image: redis:latest
+        ports:
+          - 6379:6379
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Use Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'
+        cache: 'npm'
+
+    - name: Install dependencies (Backend)
+      run: |
+        cd backend
+        npm install
+
+    - name: Lint (Backend)
+      run: |
+        cd backend
+        # Add lint command if exist, otherwise skip
+        npm run lint --if-present
+
+    - name: Install dependencies (Frontend)
+      run: |
+        cd frontend
+        npm install
+
+    - name: Build (Frontend)
+      run: |
+        cd frontend
+        npm run build
