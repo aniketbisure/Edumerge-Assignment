@@ -7,10 +7,7 @@ import Program from '../models/Program';
 import seatAllocationService from '../services/seatAllocation';
 import admissionNumberService from '../utils/admissionNumber';
 import logger from '../utils/logger';
-
-// Helper to safely extract error messages from unknown catch values
-const getErrorMessage = (error: unknown): string =>
-  error instanceof Error ? error.message : String(error);
+import { getErrorMessage } from '../utils/error';
 
 // Role: Admission Officer and Admin
 router.use(auth as RequestHandler, authorize('admin', 'admission_officer'));

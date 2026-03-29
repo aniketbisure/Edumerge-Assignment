@@ -10,7 +10,7 @@ export const allocateSeat = async (applicantId: string, programId: string, quota
   const lockKey = `lock:seat:${programId}:${quotaType}`;
   
   // 1. Acquire Redis lock
-  const lock = await redis.set(lockKey, '1', 'NX', 'EX', 10);
+  const lock = await redis.set(lockKey, '1', 'EX', 10, 'NX');
   
   if (!lock) {
     throw new Error('System busy, please retry');
@@ -26,13 +26,17 @@ export const allocateSeat = async (applicantId: string, programId: string, quota
     if (quotaIndex === -1) throw new Error(`Quota ${quotaType} not found for this program`);
 
     const quota = program.quotas[quotaIndex];
+    if (!quota) throw new Error(`Quota index ${quotaIndex} out of bounds`);
+    
     if (quota.filled >= quota.seats) {
       throw new Error(`Quota full for ${quotaType}`);
     }
 
     // 4. Update program and applicant
-    program.quotas[quotaIndex].filled += 1;
-    await program.save();
+    if (program.quotas[quotaIndex]) {
+      program.quotas[quotaIndex].filled += 1;
+      await program.save();
+    }
 
     const applicant: IApplicant | null = await Applicant.findById(applicantId);
     if (!applicant) throw new Error('Applicant not found');
@@ -68,8 +72,8 @@ export const releaseSeat = async (applicantId: string): Promise<IApplicant> => {
   const program: IProgram | null = await Program.findById(programId);
   if (program) {
     const quotaIndex = program.quotas.findIndex(q => q.quotaType === quotaType);
-    if (quotaIndex !== -1) {
-      program.quotas[quotaIndex].filled = Math.max(0, program.quotas[quotaIndex].filled - 1);
+    if (quotaIndex !== -1 && program.quotas[quotaIndex]) {
+      program.quotas[quotaIndex].filled = Math.max(0, (program.quotas[quotaIndex].filled || 0) - 1);
       await program.save();
     }
   }

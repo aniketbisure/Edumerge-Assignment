@@ -7,6 +7,7 @@ import Campus from '../models/Campus';
 import Department from '../models/Department';
 import Program from '../models/Program';
 import logger from '../utils/logger';
+import { getErrorMessage } from '../utils/error';
 
 // Middleware: all routes require Admin role
 router.use(auth, authorize('admin'));
@@ -55,7 +56,7 @@ router.post('/programs', async (req, res) => {
     const data = await Program.create(req.body);
     res.status(201).json({ success: true, data });
   } catch (error) {
-    res.status(422).json({ success: false, message: error.message });
+    res.status(422).json({ success: false, message: getErrorMessage(error) });
   }
 });
 

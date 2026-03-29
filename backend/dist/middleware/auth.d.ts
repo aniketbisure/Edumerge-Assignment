@@ -9,6 +9,6 @@ export interface AuthRequest extends Request {
 /**
  * Middleware to verify JWT token and extract user
  */
-declare const auth: (req: AuthRequest, res: Response, next: NextFunction) => Promise<void>;
+declare const auth: (req: Request, res: Response, next: NextFunction) => Promise<void>;
 export default auth;
 //# sourceMappingURL=auth.d.ts.map

@@ -25,7 +25,16 @@ app.use((0, cors_1.default)({
     credentials: true
 }));
 app.use(express_1.default.json({ limit: '10kb' }));
-app.use((0, express_mongo_sanitize_1.default)());
+// Express 5 makes req.query a getter, so we sanitize body and params manually
+app.use((req, res, next) => {
+    if (req.body) {
+        express_mongo_sanitize_1.default.sanitize(req.body, {});
+    }
+    if (req.params) {
+        express_mongo_sanitize_1.default.sanitize(req.params, {});
+    }
+    next();
+});
 // HTTP Request Logging
 if (process.env.NODE_ENV === 'development') {
     app.use((0, morgan_1.default)('dev'));

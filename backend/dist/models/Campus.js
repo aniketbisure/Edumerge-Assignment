@@ -1,9 +1,12 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const mongoose = require('mongoose');
-const campusSchema = new mongoose.Schema({
+const mongoose_1 = __importDefault(require("mongoose"));
+const campusSchema = new mongoose_1.default.Schema({
     institution: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: mongoose_1.default.Schema.Types.ObjectId,
         ref: 'Institution',
         required: true
     },
@@ -24,5 +27,6 @@ const campusSchema = new mongoose.Schema({
 }, {
     timestamps: true
 });
-module.exports = mongoose.model('Campus', campusSchema);
+const Campus = mongoose_1.default.model('Campus', campusSchema);
+exports.default = Campus;
 //# sourceMappingURL=Campus.js.map

@@ -16,5 +16,5 @@ const connectDB = async () => {
         process.exit(1);
     }
 };
-module.exports = connectDB;
+exports.default = connectDB;
 //# sourceMappingURL=db.js.map

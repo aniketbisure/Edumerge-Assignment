@@ -102,8 +102,6 @@ const applicantSchema = new mongoose_1.default.Schema({
 });
 // Indexes for query performance
 applicantSchema.index({ program: 1, status: 1 });
-applicantSchema.index({ email: 1 });
-applicantSchema.index({ admissionNumber: 1 });
 const Applicant = mongoose_1.default.model('Applicant', applicantSchema);
 exports.default = Applicant;
 //# sourceMappingURL=Applicant.js.map

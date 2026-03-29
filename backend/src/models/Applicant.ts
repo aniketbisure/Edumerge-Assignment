@@ -1,7 +1,35 @@
-import mongoose from 'mongoose';
+import mongoose, { Document, Model, Schema } from 'mongoose';
 
-const applicantSchema = new mongoose.Schema({
-  // ... (rest of schema)
+export interface IApplicant extends Document {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  dateOfBirth?: Date;
+  gender: 'Male' | 'Female' | 'Other';
+  category: 'GM' | 'SC' | 'ST' | 'OBC' | 'EWS';
+  program: mongoose.Types.ObjectId;
+  quotaType: 'KCET' | 'COMEDK' | 'Management';
+  entryType: 'Regular' | 'Lateral';
+  admissionMode: 'Government' | 'Management';
+  allotmentNumber?: string;
+  qualifyingMarks?: number;
+  status: 'Applied' | 'Seat_Locked' | 'Confirmed' | 'Cancelled';
+  createdBy: mongoose.Types.ObjectId;
+  documentStatus: {
+    tenthMarksheet: 'Pending' | 'Submitted' | 'Verified';
+    twelfthMarksheet: 'Pending' | 'Submitted' | 'Verified';
+    casteCertificate: 'Pending' | 'Submitted' | 'Verified';
+    domicile: 'Pending' | 'Submitted' | 'Verified';
+    photos: 'Pending' | 'Submitted' | 'Verified';
+  };
+  feeStatus: 'Pending' | 'Paid';
+  admissionNumber?: string;
+  seatLockedAt?: Date;
+  confirmedAt?: Date;
+}
+
+const applicantSchema = new Schema<IApplicant>({
   firstName: {
     type: String,
     required: [true, 'First name is required'],
@@ -36,7 +64,7 @@ const applicantSchema = new mongoose.Schema({
     required: true
   },
   program: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: 'Program',
     required: true
   },
@@ -69,7 +97,7 @@ const applicantSchema = new mongoose.Schema({
     default: 'Applied'
   },
   createdBy: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: 'User',
     required: true
   },
@@ -100,5 +128,5 @@ const applicantSchema = new mongoose.Schema({
 // Indexes for query performance
 applicantSchema.index({ program: 1, status: 1 });
 
-const Applicant = mongoose.model('Applicant', applicantSchema);
+const Applicant: Model<IApplicant> = mongoose.model<IApplicant>('Applicant', applicantSchema);
 export default Applicant;

@@ -10,8 +10,9 @@ const redis_1 = __importDefault(require("../config/redis"));
  * Middleware to verify JWT token and extract user
  */
 const auth = async (req, res, next) => {
+    const authReq = req;
     try {
-        const authHeader = req.headers.authorization;
+        const authHeader = authReq.headers.authorization;
         if (!authHeader || !authHeader.startsWith('Bearer ')) {
             throw new Error('No authentication token provided');
         }

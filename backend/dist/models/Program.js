@@ -117,8 +117,10 @@ const programSchema = new mongoose_1.Schema({
 });
 // Virtual for available seats
 programSchema.virtual('availableSeats').get(function () {
+    if (!this.quotas)
+        return this.totalIntake || 0;
     const totalFilled = this.quotas.reduce((acc, q) => acc + q.filled, 0);
-    return this.totalIntake - totalFilled;
+    return (this.totalIntake || 0) - totalFilled;
 });
 // Pre-save validation: sum of quota seats must equal totalIntake
 programSchema.pre('save', async function () {

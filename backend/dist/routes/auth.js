@@ -18,11 +18,18 @@ const generateToken = (userId, userRole, email, secret, expiry) => {
 router.post('/login', async (req, res) => {
     try {
         const { email, password } = req.body;
+        logger_1.default.info(`Login attempt for: ${email}`);
         if (!email || !password) {
             throw new Error('Please provide email and password');
         }
         const user = await User_1.default.findOne({ email }).select('+password');
-        if (!user || !(await user.comparePassword(password))) {
+        if (!user) {
+            logger_1.default.warn(`User not found: ${email}`);
+            throw new Error('Invalid email or password');
+        }
+        const isMatch = await user.comparePassword(password);
+        if (!isMatch) {
+            logger_1.default.warn(`Password mismatch for: ${email}`);
             throw new Error('Invalid email or password');
         }
         if (!user.isActive) {
@@ -41,8 +48,9 @@ router.post('/login', async (req, res) => {
         });
     }
     catch (error) {
-        logger_1.default.error('Login failed:', error.message);
-        res.status(401).json({ success: false, message: error.message });
+        const message = error instanceof Error ? error.message : String(error);
+        logger_1.default.error(`Login failed: ${message}`);
+        res.status(401).json({ success: false, message: message || 'Login failed' });
     }
 });
 // Refresh Token route
@@ -68,7 +76,10 @@ router.post('/refresh', async (req, res) => {
 router.post('/logout', auth_1.default, async (req, res) => {
     try {
         const authHeader = req.headers.authorization;
-        const token = authHeader.split(' ')[1];
+        const token = authHeader?.split(' ')[1];
+        if (!token) {
+            throw new Error('No authorization token found');
+        }
         // Blacklist token in Redis (expire after expiry time)
         // For simplicity, blacklist for 1 hour
         await redis_1.default.set(`blacklist:${token}`, '1', 'EX', 3600);

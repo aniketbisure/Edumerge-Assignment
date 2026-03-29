@@ -1,15 +1,15 @@
 import mongoose from 'mongoose';
 declare const Applicant: mongoose.Model<{
     email: string;
-    firstName: string;
-    lastName: string;
     phone: string;
-    gender: "Male" | "Female" | "Other";
-    category: "GM" | "SC" | "ST" | "OBC" | "EWS";
-    program: mongoose.Types.ObjectId;
     quotaType: "KCET" | "COMEDK" | "Management";
     entryType: "Regular" | "Lateral";
     admissionMode: "Management" | "Government";
+    firstName: string;
+    lastName: string;
+    gender: "Male" | "Female" | "Other";
+    category: "GM" | "SC" | "ST" | "OBC" | "EWS";
+    program: mongoose.Types.ObjectId;
     status: "Applied" | "Seat_Locked" | "Confirmed" | "Cancelled";
     createdBy: mongoose.Types.ObjectId;
     feeStatus: "Pending" | "Paid";
@@ -30,15 +30,15 @@ declare const Applicant: mongoose.Model<{
     id: string;
 }, mongoose.Document<unknown, {}, {
     email: string;
-    firstName: string;
-    lastName: string;
     phone: string;
-    gender: "Male" | "Female" | "Other";
-    category: "GM" | "SC" | "ST" | "OBC" | "EWS";
-    program: mongoose.Types.ObjectId;
     quotaType: "KCET" | "COMEDK" | "Management";
     entryType: "Regular" | "Lateral";
     admissionMode: "Management" | "Government";
+    firstName: string;
+    lastName: string;
+    gender: "Male" | "Female" | "Other";
+    category: "GM" | "SC" | "ST" | "OBC" | "EWS";
+    program: mongoose.Types.ObjectId;
     status: "Applied" | "Seat_Locked" | "Confirmed" | "Cancelled";
     createdBy: mongoose.Types.ObjectId;
     feeStatus: "Pending" | "Paid";
@@ -61,15 +61,15 @@ declare const Applicant: mongoose.Model<{
     timestamps: true;
 }> & Omit<{
     email: string;
-    firstName: string;
-    lastName: string;
     phone: string;
-    gender: "Male" | "Female" | "Other";
-    category: "GM" | "SC" | "ST" | "OBC" | "EWS";
-    program: mongoose.Types.ObjectId;
     quotaType: "KCET" | "COMEDK" | "Management";
     entryType: "Regular" | "Lateral";
     admissionMode: "Management" | "Government";
+    firstName: string;
+    lastName: string;
+    gender: "Male" | "Female" | "Other";
+    category: "GM" | "SC" | "ST" | "OBC" | "EWS";
+    program: mongoose.Types.ObjectId;
     status: "Applied" | "Seat_Locked" | "Confirmed" | "Cancelled";
     createdBy: mongoose.Types.ObjectId;
     feeStatus: "Pending" | "Paid";
@@ -96,15 +96,15 @@ declare const Applicant: mongoose.Model<{
     timestamps: true;
 }, {
     email: string;
-    firstName: string;
-    lastName: string;
     phone: string;
-    gender: "Male" | "Female" | "Other";
-    category: "GM" | "SC" | "ST" | "OBC" | "EWS";
-    program: mongoose.Types.ObjectId;
     quotaType: "KCET" | "COMEDK" | "Management";
     entryType: "Regular" | "Lateral";
     admissionMode: "Management" | "Government";
+    firstName: string;
+    lastName: string;
+    gender: "Male" | "Female" | "Other";
+    category: "GM" | "SC" | "ST" | "OBC" | "EWS";
+    program: mongoose.Types.ObjectId;
     status: "Applied" | "Seat_Locked" | "Confirmed" | "Cancelled";
     createdBy: mongoose.Types.ObjectId;
     feeStatus: "Pending" | "Paid";
@@ -123,15 +123,15 @@ declare const Applicant: mongoose.Model<{
     admissionNumber?: string | null;
 } & mongoose.DefaultTimestampProps, mongoose.Document<unknown, {}, {
     email: string;
-    firstName: string;
-    lastName: string;
     phone: string;
-    gender: "Male" | "Female" | "Other";
-    category: "GM" | "SC" | "ST" | "OBC" | "EWS";
-    program: mongoose.Types.ObjectId;
     quotaType: "KCET" | "COMEDK" | "Management";
     entryType: "Regular" | "Lateral";
     admissionMode: "Management" | "Government";
+    firstName: string;
+    lastName: string;
+    gender: "Male" | "Female" | "Other";
+    category: "GM" | "SC" | "ST" | "OBC" | "EWS";
+    program: mongoose.Types.ObjectId;
     status: "Applied" | "Seat_Locked" | "Confirmed" | "Cancelled";
     createdBy: mongoose.Types.ObjectId;
     feeStatus: "Pending" | "Paid";
@@ -154,15 +154,15 @@ declare const Applicant: mongoose.Model<{
     timestamps: true;
 }> & Omit<{
     email: string;
-    firstName: string;
-    lastName: string;
     phone: string;
-    gender: "Male" | "Female" | "Other";
-    category: "GM" | "SC" | "ST" | "OBC" | "EWS";
-    program: mongoose.Types.ObjectId;
     quotaType: "KCET" | "COMEDK" | "Management";
     entryType: "Regular" | "Lateral";
     admissionMode: "Management" | "Government";
+    firstName: string;
+    lastName: string;
+    gender: "Male" | "Female" | "Other";
+    category: "GM" | "SC" | "ST" | "OBC" | "EWS";
+    program: mongoose.Types.ObjectId;
     status: "Applied" | "Seat_Locked" | "Confirmed" | "Cancelled";
     createdBy: mongoose.Types.ObjectId;
     feeStatus: "Pending" | "Paid";
@@ -187,15 +187,15 @@ declare const Applicant: mongoose.Model<{
     id: string;
 }, unknown, {
     email: string;
-    firstName: string;
-    lastName: string;
     phone: string;
-    gender: "Male" | "Female" | "Other";
-    category: "GM" | "SC" | "ST" | "OBC" | "EWS";
-    program: mongoose.Types.ObjectId;
     quotaType: "KCET" | "COMEDK" | "Management";
     entryType: "Regular" | "Lateral";
     admissionMode: "Management" | "Government";
+    firstName: string;
+    lastName: string;
+    gender: "Male" | "Female" | "Other";
+    category: "GM" | "SC" | "ST" | "OBC" | "EWS";
+    program: mongoose.Types.ObjectId;
     status: "Applied" | "Seat_Locked" | "Confirmed" | "Cancelled";
     createdBy: mongoose.Types.ObjectId;
     feeStatus: "Pending" | "Paid";
@@ -220,15 +220,15 @@ declare const Applicant: mongoose.Model<{
     __v: number;
 }>, {
     email: string;
-    firstName: string;
-    lastName: string;
     phone: string;
-    gender: "Male" | "Female" | "Other";
-    category: "GM" | "SC" | "ST" | "OBC" | "EWS";
-    program: mongoose.Types.ObjectId;
     quotaType: "KCET" | "COMEDK" | "Management";
     entryType: "Regular" | "Lateral";
     admissionMode: "Management" | "Government";
+    firstName: string;
+    lastName: string;
+    gender: "Male" | "Female" | "Other";
+    category: "GM" | "SC" | "ST" | "OBC" | "EWS";
+    program: mongoose.Types.ObjectId;
     status: "Applied" | "Seat_Locked" | "Confirmed" | "Cancelled";
     createdBy: mongoose.Types.ObjectId;
     feeStatus: "Pending" | "Paid";

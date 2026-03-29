@@ -12,14 +12,17 @@ const Program_1 = __importDefault(require("../models/Program"));
 const seatAllocation_1 = __importDefault(require("../services/seatAllocation"));
 const admissionNumber_1 = __importDefault(require("../utils/admissionNumber"));
 const logger_1 = __importDefault(require("../utils/logger"));
+// Helper to safely extract error messages from unknown catch values
+const getErrorMessage = (error) => error instanceof Error ? error.message : String(error);
 // Role: Admission Officer and Admin
 router.use(auth_1.default, (0, rbac_1.default)('admin', 'admission_officer'));
 // 1. Create Applicant
 router.post('/', async (req, res) => {
+    const authReq = req;
     try {
         const applicantData = {
             ...req.body,
-            createdBy: req.user.id
+            createdBy: authReq.user.id
         };
         // Quick validation: Check if program exists
         const program = await Program_1.default.findById(req.body.program);
@@ -29,14 +32,16 @@ router.post('/', async (req, res) => {
         res.status(201).json({ success: true, data: applicant });
     }
     catch (error) {
-        logger_1.default.error('Error creating applicant:', error.message);
-        res.status(400).json({ success: false, message: error.message });
+        logger_1.default.error('Error creating applicant:', getErrorMessage(error));
+        res.status(400).json({ success: false, message: getErrorMessage(error) });
     }
 });
 // 2. List Applicants (with Filters & Search)
-router.get('/', async (req, res) => {
+router.get('/', async (req, res, next) => {
     try {
-        const { status, program, quotaType, search, page = 1, limit = 10 } = req.query;
+        const { status, program, quotaType, search } = req.query;
+        const page = Number(req.query.page) || 1;
+        const limit = Number(req.query.limit) || 10;
         const query = {};
         if (status)
             query.status = status;
@@ -62,11 +67,12 @@ router.get('/', async (req, res) => {
         res.json({
             success: true,
             data: applicants,
-            meta: { total, page: Number(page), limit: Number(limit) }
+            meta: { total, page, limit }
         });
     }
     catch (error) {
-        res.status(500).json({ success: false, message: error.message });
+        logger_1.default.error('Error fetching applicants:', getErrorMessage(error));
+        next(error);
     }
 });
 // 3. Get Applicant Details
@@ -80,7 +86,7 @@ router.get('/:id', async (req, res) => {
         res.json({ success: true, data: applicant });
     }
     catch (error) {
-        res.status(404).json({ success: false, message: error.message });
+        res.status(404).json({ success: false, message: getErrorMessage(error) });
     }
 });
 // 4. Update Document Verification
@@ -91,7 +97,7 @@ router.put('/:id/documents', async (req, res) => {
         res.json({ success: true, data: applicant });
     }
     catch (error) {
-        res.status(400).json({ success: false, message: error.message });
+        res.status(400).json({ success: false, message: getErrorMessage(error) });
     }
 });
 // 5. Update Fee Status
@@ -102,7 +108,7 @@ router.put('/:id/fee', async (req, res) => {
         res.json({ success: true, data: applicant });
     }
     catch (error) {
-        res.status(400).json({ success: false, message: error.message });
+        res.status(400).json({ success: false, message: getErrorMessage(error) });
     }
 });
 // 6. Allocate Seat (Lock Seat)
@@ -131,8 +137,8 @@ router.post('/:id/allocate-seat', async (req, res) => {
         });
     }
     catch (error) {
-        logger_1.default.error('Allocation failed:', error.message);
-        res.status(409).json({ success: false, message: error.message });
+        logger_1.default.error('Allocation failed:', getErrorMessage(error));
+        res.status(409).json({ success: false, message: getErrorMessage(error) });
     }
 });
 // 7. Confirm Admission (Requires Paid Fee)
@@ -151,11 +157,11 @@ router.post('/:id/confirm', async (req, res) => {
         }
         // Rule 3: Essential Docs should be Submitted/Verified (optional, but good)
         // For simplicity, let's just proceed or check tenthMarksheet
-        if (applicant.documentStatus.tenthMarksheet === 'Pending') {
+        if (applicant.documentStatus?.tenthMarksheet === 'Pending') {
             throw new Error('Tenth marksheet verification is pending');
         }
         // Rule 4: Generate Admission Number (Unique/Immutable)
-        const admissionNumber = await admissionNumber_1.default.generateAdmissionNumber(applicant, applicant.program);
+        const admissionNumber = await admissionNumber_1.default.generateAdmissionNumber(applicant, applicant.program.toString());
         applicant.admissionNumber = admissionNumber;
         applicant.status = 'Confirmed';
         applicant.confirmedAt = new Date();
@@ -167,8 +173,8 @@ router.post('/:id/confirm', async (req, res) => {
         });
     }
     catch (error) {
-        logger_1.default.error('Confirmation failed:', error.message);
-        res.status(400).json({ success: false, message: error.message });
+        logger_1.default.error('Confirmation failed:', getErrorMessage(error));
+        res.status(400).json({ success: false, message: getErrorMessage(error) });
     }
 });
 // 8. Cancel Admission & Release Seat
@@ -182,7 +188,7 @@ router.delete('/:id/cancel', async (req, res) => {
         });
     }
     catch (error) {
-        res.status(400).json({ success: false, message: error.message });
+        res.status(400).json({ success: false, message: getErrorMessage(error) });
     }
 });
 exports.default = router;

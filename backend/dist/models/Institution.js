@@ -1,7 +1,10 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const mongoose = require('mongoose');
-const institutionSchema = new mongoose.Schema({
+const mongoose_1 = __importDefault(require("mongoose"));
+const institutionSchema = new mongoose_1.default.Schema({
     name: {
         type: String,
         required: [true, 'Please provide an institution name']
@@ -26,15 +29,16 @@ const institutionSchema = new mongoose.Schema({
     timestamps: true
 });
 // Pre-save to auto-generate code from name initials if not provided (optional extra)
-institutionSchema.pre('save', function (next) {
-    if (!this.code && this.name) {
-        this.code = this.name
+institutionSchema.pre('save', async function () {
+    const doc = this; // Cast to any to access dynamic properties or define an interface
+    if (!doc.code && doc.name) {
+        doc.code = doc.name
             .split(' ')
-            .map(word => word[0])
+            .map((word) => (word[0] || ''))
             .join('')
             .toUpperCase();
     }
-    next();
 });
-module.exports = mongoose.model('Institution', institutionSchema);
+const Institution = mongoose_1.default.model('Institution', institutionSchema);
+exports.default = Institution;
 //# sourceMappingURL=Institution.js.map
