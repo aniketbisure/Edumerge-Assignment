@@ -1,0 +1,9 @@
+node_modules
+npm-debug.log
+dist
+.env
+ts_errors.txt
+ts_errors_2.txt
+combined.log
+err.log
+error.log
