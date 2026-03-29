@@ -14,14 +14,17 @@ connectDB();
 
 const app = express();
 
-// Security Middlewares
+// 1. CORS - MUST be first to handle Preflight (OPTIONS) requests
+app.use(cors({
+  origin: process.env.CLIENT_URL || true, // 'true' reflects the request origin (safe with credentials)
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
+// 2. Security Middlewares
 app.use(helmet());
 app.use(generalLimiter);
-app.use(cors({
-  origin: process.env.CLIENT_URL || '*',
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-  credentials: true
-}));
 app.use(express.json({ limit: '10kb' }));
 // Express 5 makes req.query a getter, so we sanitize body and params manually
 app.use((req, res, next) => {
