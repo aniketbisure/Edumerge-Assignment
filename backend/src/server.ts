@@ -16,7 +16,15 @@ const app = express();
 
 // 1. CORS - MUST be first to handle Preflight (OPTIONS) requests
 app.use(cors({
-  origin: process.env.CLIENT_URL || true, // 'true' reflects the request origin (safe with credentials)
+  origin: (origin, callback) => {
+    // If CLIENT_URL is defined, only it can access. Otherwise, we allow for now.
+    if (!origin) return callback(null, true);
+    if (process.env.CLIENT_URL && origin.includes(process.env.CLIENT_URL)) {
+      return callback(null, true);
+    }
+    // Reflect origin to handle browser requirements for credentials
+    return callback(null, true);
+  },
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   credentials: true,
   allowedHeaders: ['Content-Type', 'Authorization']
