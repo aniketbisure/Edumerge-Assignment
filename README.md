@@ -1,5 +1,7 @@
 # Admission Management & CRM System
 
+**Live Status:** [Deployment Dashboard](https://edumerge-assignment.vercel.app)
+
 A full-stack Admission Management System built for the Edumerge assignment. This application manages the student admission lifecycle, from master configuration to final seat allocation and admission confirmation, ensuring quota compliance and real-time monitoring.
 
 ## 🚀 Fast Track Setup (Docker)
