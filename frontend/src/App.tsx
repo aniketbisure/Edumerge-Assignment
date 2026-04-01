@@ -9,6 +9,7 @@ import Applicants from './pages/Applicants';
 import NewApplicant from './pages/NewApplicant';
 import ApplicantDetail from './pages/ApplicantDetail';
 import MasterSetup from './pages/MasterSetup';
+import Payroll from './pages/Payroll';
 import { Toaster } from 'react-hot-toast';
 import './index.css';
 
@@ -65,6 +66,7 @@ function App() {
               <Route path="new-applicant" element={<NewApplicant />} />
               <Route path="master-setup" element={<PrivateRoute roles={['admin']}><MasterSetup /></PrivateRoute>} />
               <Route path="programs" element={<PrivateRoute roles={['admin']}><MasterSetup /></PrivateRoute>} />
+              <Route path="payroll" element={<PrivateRoute roles={['admin']}><Payroll /></PrivateRoute>} />
             </Route>
             
             <Route path="*" element={<Navigate to="/login" replace />} />

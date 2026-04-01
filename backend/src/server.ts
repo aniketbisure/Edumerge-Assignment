@@ -16,6 +16,7 @@ import authRoutes from './routes/auth';
 import masterRoutes from './routes/masters';
 import applicantRoutes from './routes/applicants';
 import dashboardRoutes from './routes/dashboard';
+import payrollRoutes from './routes/payroll';
 
 // Connect to Database
 connectDB().then(async () => {
@@ -32,6 +33,10 @@ connectDB().then(async () => {
 });
 
 const app = express();
+
+// Trust Render/Heroku/etc. reverse proxy so express-rate-limit can read the real client IP
+// Without this, X-Forwarded-For header causes ERR_ERL_UNEXPECTED_X_FORWARDED_FOR
+app.set('trust proxy', 1);
 
 // 1. CORS - MUST be first to handle Preflight (OPTIONS) requests
 app.use(cors({
@@ -87,6 +92,9 @@ app.use('/api/applicants', applicantRoutes);
 
 // Dashboard Routes
 app.use('/api/dashboard', dashboardRoutes);
+
+// Payroll Routes
+app.use('/api/payroll', payrollRoutes);
 
 // Error Handling
 app.use(errorHandler);

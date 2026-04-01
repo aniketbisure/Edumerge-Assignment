@@ -10,6 +10,7 @@ export const generalLimiter = rateLimit({
   max: 100,
   standardHeaders: true,
   legacyHeaders: false,
+  validate: { xForwardedForHeader: false }, // Render sets this header; trust proxy handles it
   message: {
     success: false,
     message: 'Too many requests from this IP, please try again after 15 minutes'
@@ -21,6 +22,7 @@ export const authLimiter = rateLimit({
   max: 10, // Stricter for auth routes
   standardHeaders: true,
   legacyHeaders: false,
+  validate: { xForwardedForHeader: false },
   message: {
     success: false,
     message: 'Too many login attempts, please try again later'
@@ -32,6 +34,7 @@ export const seatLimiter = rateLimit({
   max: 30,
   standardHeaders: true,
   legacyHeaders: false,
+  validate: { xForwardedForHeader: false },
   message: {
     success: false,
     message: 'Too many allocation requests, please wait a minute'

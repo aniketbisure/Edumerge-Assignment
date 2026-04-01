@@ -4,7 +4,8 @@ import {
   Settings, 
   LogOut, 
   LayoutDashboard, 
-  Briefcase 
+  Briefcase,
+  CreditCard 
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
@@ -22,6 +23,7 @@ const Layout = () => {
     { name: 'Applicants', path: '/applicants', icon: <Users size={20} />, roles: ['admin', 'admission_officer'] },
     { name: 'Master Setup', path: '/master-setup', icon: <Settings size={20} />, roles: ['admin'] },
     { name: 'Programs', path: '/programs', icon: <Briefcase size={20} />, roles: ['admin'] },
+    { name: 'Payroll', path: '/payroll', icon: <CreditCard size={20} />, roles: ['admin'] },
   ].filter(item => item.roles.includes(user?.role || ''));
 
   return (
